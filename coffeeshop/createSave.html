@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create/Load Session Save - Mini Game Thing!</title>
+    <link rel="stylesheet" href="../styles/createSave.css">
+</head>
+<body>
+    <div class="page-controls-standalone">
+        <a href="../index.html" class="back-button-global">&laquo; Back to Main Page</a>
+    </div>
+
+    <div class="save-manager-container">
+        <header class="content-header">
+            <h1>Manage Session Save</h1>
+            <p>Create saves, download JSON files, or load from existing save data.</p>
+        </header>
+
+        <main class="save-form-area">
+            <div class="form-layout">
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="playerNameInput">Enter Player Name:</label>
+                        <input type="text" id="playerNameInput" placeholder="E.g., BaristaKing">
+                    </div>
+                    <div class="input-group">
+                        <label for="playerScoreInput">Enter Current Score (Optional):</label>
+                        <input type="number" id="playerScoreInput" placeholder="E.g., 1000">
+                    </div>
+                    <div class="input-group">
+                        <label for="staffSelection">Choose Your Staff:</label>
+                        <div class="staff-selector">
+                            <div class="staff-option" data-staff="1">
+                                <img src="../images/barista.png" alt="Barista">
+                                <span>Barista</span>
+                            </div>
+                            <div class="staff-option" data-staff="2">
+                                <img src="../images/broista.png" alt="Broista">
+                                <span>Broista</span>
+                            </div>
+                            <div class="staff-option" data-staff="3">
+                                <img src="../images/non-binary.png" alt="Non-Binary">
+                                <span>Non-Binary</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="staffSelection" value="1">
+                    </div>
+                </div>
+
+                <div class="button-section">
+                    <button id="saveButton" class="action-button save-button">Save & Download</button>
+                    <button id="loadButton" class="action-button load-button">Load from Session</button>
+                    <button id="clearButton" class="action-button clear-button">Clear Session</button>
+                    <button id="startGameButton" class="action-button start-game-button" disabled>Start Game</button>
+                </div>
+
+                <div id="saveDataDisplay" class="display-area">
+                    Enter player details and save. Load to retrieve.
+                </div>
+            </div>
+
+            <!-- Load from File Section -->
+            <div class="load-section">
+                <h3>Load from Save File</h3>
+                <div class="load-options">
+                    <div class="file-upload-area" id="fileDropArea">
+                        <div class="upload-content">
+                            <p><strong>Drag & Drop JSON file here</strong></p>
+                            <p>or</p>
+                            <button id="fileSelectButton" class="file-select-button">Choose File</button>
+                            <input type="file" id="fileInput" accept=".json" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="paste-area">
+                        <label for="jsonPasteArea">Or paste JSON data:</label>
+                        <textarea id="jsonPasteArea" placeholder='Paste your JSON save data here, e.g.:
+{
+  "playerName": "BaristaKing",
+  "playerScore": 1500,
+  "gameType": "coffeeShop",
+  "staffType": 1
+}'></textarea>
+                        <button id="loadFromPasteButton" class="action-button load-button">Load from Paste</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="content-footer">
+            <p>Save data can be stored in browser session or downloaded as JSON files.</p>
+        </footer>
+    </div>
+
+    <script src="saves/saveManager.js"></script>
+</body>
+</html>

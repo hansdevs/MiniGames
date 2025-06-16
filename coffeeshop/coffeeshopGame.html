@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop Game - Mini Game Thing!</title>
+    <link rel="stylesheet" href="../styles/coffeeShopGame.css">
+</head>
+<body>
+    <div class="page-controls">
+        <a href="../createSave.html" class="back-button-global">&laquo; Back to Save Manager</a>
+        
+        <!-- Progress Bar with Level Counter -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <div class="level-counter">
+                Level: <span id="levelDisplay">1</span>
+            </div>
+        </div>
+        
+        <button id="muteButton" class="mute-button">Mute</button>
+    </div>
+
+    <div class="game-container">
+        <!-- Left Sidebar - Game Menu -->
+        <aside class="left-sidebar">
+            <div class="sidebar-section">
+                <h3>Hours of Operation</h3>
+                <div class="hours-controls">
+                    <div class="time-selector">
+                        <label>Open:</label>
+                        <select id="openHour">
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8" selected>8</option>
+                            <option value="9">9</option>
+                        </select>
+                        <select id="openPeriod">
+                            <option value="AM" selected>AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                    <div class="time-selector">
+                        <label>Close:</label>
+                        <select id="closeHour">
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6" selected>6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                        <select id="closePeriod">
+                            <option value="AM">AM</option>
+                            <option value="PM" selected>PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="days-selector">
+                    <button class="day-btn active" data-day="M">M</button>
+                    <button class="day-btn active" data-day="T">T</button>
+                    <button class="day-btn active" data-day="W">W</button>
+                    <button class="day-btn active" data-day="T2">T</button>
+                    <button class="day-btn active" data-day="F">F</button>
+                    <button class="day-btn" data-day="S">S</button>
+                    <button class="day-btn" data-day="S2">S</button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Wallet</h3>
+                <div class="wallet-display">
+                    <span class="currency">$</span>
+                    <span id="walletAmount">500.00</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Player Info</h3>
+                <div class="player-stats">
+                    <div><span id="playerName">Player</span></div>
+                    <div>Score: <span id="playerScore">0</span></div>
+                    <div>Rating: <span id="playerRating">5.0</span>⭐</div>
+                    <div>Served: <span id="customersServed">0</span></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Game Area -->
+        <main class="main-game-area">
+            <header class="game-header">
+                <h1 id="welcomeMessage">Welcome to the Coffee Shop!</h1>
+                <div class="game-status">
+                    <span id="shopStatus">Open</span> | 
+                    <span id="currentTime">8:00 AM</span>
+                </div>
+            </header>
+
+            <div class="game-play-area">
+                <!-- Staff Behind Counter -->
+                <div class="staff-area">
+                    <img id="staffMember" src="../images/barista.png" alt="Staff Member" class="staff-behind-counter">
+                </div>
+                
+                <!-- Customer Area with Order Tickets -->
+                <div class="customer-area">
+                    <div id="customerQueue" class="customer-queue">
+                        <!-- Customers will appear here -->
+                    </div>
+                </div>
+                
+                <!-- Order Making Interface -->
+                <div class="order-interface">
+                    <div id="currentOrder" class="current-order">
+                        <h4>Current Order:</h4>
+                        <div id="orderDetails" class="order-details">
+                            No active order
+                        </div>
+                        <div class="order-actions">
+                            <button id="fulfillOrderButton" class="fulfill-button" disabled>Fulfill Order</button>
+                            <button id="cancelOrderButton" class="cancel-button" disabled>Cancel Order</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-area">
+                    <button id="saveProgressButton" class="save-progress-button">Save Progress</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar - Restaurant Menu -->
+        <aside class="right-sidebar">
+            <div class="sidebar-section">
+                <h3>Menu & Pricing</h3>
+                <div class="menu-items" id="menuItems">
+                    <!-- Menu items will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Inventory</h3>
+                <div class="inventory-controls">
+                    <button id="reorderAllButton" class="reorder-button">Reorder All (Sets of 5)</button>
+                    <div id="inventoryStatus" class="inventory-status">
+                        All items in stock
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="/coffeeshop/coffeeShop.js"></script>
+    <script src="/coffeeshop/coffeeShopGame.js"></script>
+</body>
+</html>

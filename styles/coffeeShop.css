@@ -1,0 +1,137 @@
+body {
+    background-color: #f4eade; /* A warm, coffee-like background */
+    color: #4a3b31; /* Dark brown text */
+    font-family: 'Georgia', serif; /* A slightly more classic font */
+    display: flex;
+    flex-direction: column; /* Allow stacking of controls and container */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.page-controls {
+    width: 100%;
+    max-width: 700px; /* Match the coffee-shop-container max-width */
+    display: flex;
+    justify-content: space-between; /* Puts back button left, mute button right */
+    align-items: center;
+    margin-bottom: 20px; /* Space between controls and the main box */
+    padding: 0 10px; /* Some padding if screen is exactly max-width */
+    box-sizing: border-box;
+}
+
+.back-button-global {
+    text-decoration: none;
+    color: #8c7851;
+    font-size: 1em; /* Adjusted size */
+    padding: 10px 18px;
+    border-radius: 5px;
+    background-color: #fff; /* Match card background or distinct */
+    border: 1px solid #d4c0a1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.back-button-global:hover {
+    background-color: #fdfaf6;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.mute-button {
+    background-color: #fff;
+    color: #8c7851;
+    border: 1px solid #d4c0a1;
+    padding: 10px 18px;
+    font-size: 1em; /* Adjusted size */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.mute-button:hover {
+    background-color: #fdfaf6;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.mute-button.muted {
+    background-color: #8c7851; /* Indicate muted state */
+    color: #fff;
+}
+
+
+.coffee-shop-container {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 700px;
+    width: 100%;
+}
+
+.game-header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #d4c0a1;
+    padding-bottom: 20px;
+    /* Removed position: relative as back button is no longer inside */
+}
+
+.game-header h1 {
+    font-size: 2.5em;
+    color: #6f4e37; /* Coffee brown color */
+    margin: 0;
+}
+
+/* Removed .back-button style as it's replaced by .back-button-global */
+
+.game-area .shop-visual {
+    margin-bottom: 25px;
+}
+
+.game-area .shop-visual img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.game-area p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.start-button {
+    background-color: #6f4e37; /* Coffee brown */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.3em;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.start-button:hover {
+    background-color: #5a3f2b; /* Darker coffee brown */
+    transform: translateY(-2px);
+}
+
+.start-button:active {
+    transform: translateY(0px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.game-footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0d1b0;
+    font-size: 0.9em;
+    color: #7a6b56;
+}
