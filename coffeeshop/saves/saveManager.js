@@ -1,356 +1,328 @@
 document.addEventListener("DOMContentLoaded", () => {
   const playerNameInput = document.getElementById("playerNameInput")
-  const playerScoreInput = document.getElementById("playerScoreInput")
-  const staffSelection = document.getElementById("staffSelection")
-  const saveButton = document.getElementById("saveButton")
-  const loadButton = document.getElementById("loadButton")
-  const clearButton = document.getElementById("clearButton")
-  const startGameButton = document.getElementById("startGameButton")
-  const saveDataDisplay = document.getElementById("saveDataDisplay")
+  const shopNameInput = document.getElementById("shopNameInput")
+  const staffOptions = document.querySelectorAll(".staff-option")
+  const staffSelectionIdInput = document.getElementById("staffSelectionId")
+  const staffSelectionImgInput = document.getElementById("staffSelectionImg")
 
-  // File handling elements
-  const fileDropArea = document.getElementById("fileDropArea")
+  const newGameButton = document.getElementById("newGameButton")
+  const loadFromSessionButton = document.getElementById("loadFromSessionButton")
+  const downloadSaveButton = document.getElementById("downloadSaveButton")
   const fileInput = document.getElementById("fileInput")
   const fileSelectButton = document.getElementById("fileSelectButton")
+  const fileDropArea = document.getElementById("fileDropArea")
   const jsonPasteArea = document.getElementById("jsonPasteArea")
   const loadFromPasteButton = document.getElementById("loadFromPasteButton")
+  const clearSessionButton = document.getElementById("clearSessionButton")
+  const saveDataDisplay = document.getElementById("saveDataDisplay")
 
-  const COFFEE_SHOP_SAVE_KEY = "coffeeShopGameSaveData"
+  const SAVE_KEY = "coffeeShopGameSaveData_v3" // Updated key for new structure
 
-  // Initialize staff selector
-  function initStaffSelector() {
-    const staffOptions = document.querySelectorAll(".staff-option")
+  const allStaffTypes = [
+    { id: "barista", name: "Classic Barista", img: "../images/barista.png" },
+    { id: "broista", name: "Cool Broista", img: "../images/broista.png" },
+    { id: "non-binary", name: "Modern Barista", img: "../images/non-binary.png" },
+  ]
+  let selectedStaffId = allStaffTypes[0].id
+  let selectedStaffImg = allStaffTypes[0].img
 
-    // Set default selection
-    staffOptions[0].classList.add("selected")
-
-    staffOptions.forEach((option) => {
-      option.addEventListener("click", () => {
-        // Remove selected class from all options
-        staffOptions.forEach((opt) => opt.classList.remove("selected"))
-        // Add selected class to clicked option
-        option.classList.add("selected")
-        // Update hidden input value
-        staffSelection.value = option.dataset.staff
-        updateStartGameButton()
-      })
+  staffOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      staffOptions.forEach((opt) => opt.classList.remove("selected"))
+      option.classList.add("selected")
+      selectedStaffId = option.dataset.staffId
+      selectedStaffImg = option.dataset.staffImg
+      staffSelectionIdInput.value = selectedStaffId
+      staffSelectionImgInput.value = selectedStaffImg
     })
-  }
+  })
 
-  // Function to check if we have valid player data and enable/disable Start Game button
-  function updateStartGameButton() {
-    const playerName = playerNameInput.value.trim()
-    const hasValidData = playerName.length > 0
-
-    if (startGameButton) {
-      startGameButton.disabled = !hasValidData
-    }
-  }
-
-  // Function to display messages or data
-  function displayData(message, type = "info") {
+  function displayMessage(message, type = "info") {
+    saveDataDisplay.innerHTML = `<span class="${type}">${message}</span>`
     if (type === "json") {
       saveDataDisplay.innerHTML = `<pre>${JSON.stringify(message, null, 2)}</pre>`
-    } else {
-      saveDataDisplay.innerHTML = `<span class="${type}">${message}</span>`
     }
   }
 
-  // Function to generate filename based on player name
-  function generateFileName(playerName) {
-    const namePrefix = playerName
-      .substring(0, 5)
-      .replace(/[^a-zA-Z0-9]/g, "")
-      .toLowerCase()
-    const saveCountKey = `saveCount_${namePrefix}`
-    const saveCount = Number.parseInt(localStorage.getItem(saveCountKey) || "0", 10) + 1
-    localStorage.setItem(saveCountKey, saveCount.toString())
-    return `${namePrefix}${saveCount}.json`
-  }
+  function createDefaultSaveData() {
+    const playerName = playerNameInput.value.trim() || "Pat Barista"
+    const shopName = shopNameInput.value.trim() || "The Daily Grind"
 
-  // Function to download JSON file
-  function downloadJSON(data, filename) {
-    const jsonString = JSON.stringify(data, null, 2)
-    const blob = new Blob([jsonString], { type: "application/json" })
-    const url = URL.createObjectURL(blob)
+    const unusedStaff = allStaffTypes.filter((staff) => staff.id !== selectedStaffId)
 
-    const a = document.createElement("a")
-    a.href = url
-    a.download = filename
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  }
-
-  // Function to load save data into form
-  function loadSaveIntoForm(saveData) {
-    try {
-      playerNameInput.value = saveData.playerName || ""
-      playerScoreInput.value = saveData.playerScore || ""
-
-      // Set staff selection
-      if (saveData.staffType) {
-        const staffOptions = document.querySelectorAll(".staff-option")
-        staffOptions.forEach((opt) => opt.classList.remove("selected"))
-
-        const selectedStaff = document.querySelector(`[data-staff="${saveData.staffType}"]`)
-        if (selectedStaff) {
-          selectedStaff.classList.add("selected")
-          staffSelection.value = saveData.staffType
-        }
-      }
-
-      // Save to session storage
-      sessionStorage.setItem(COFFEE_SHOP_SAVE_KEY, JSON.stringify(saveData))
-
-      displayData(saveData, "json")
-      updateStartGameButton()
-    } catch (e) {
-      displayData("Error loading save data into form.", "error")
-      console.error("Error loading save data:", e)
+    return {
+      playerName: playerName,
+      shopName: shopName,
+      playerStaff: { id: selectedStaffId, img: selectedStaffImg },
+      availableAssistants: unusedStaff, // Store other character models
+      hiredAssistant: null, // No assistant hired initially
+      level: 1,
+      xp: 0,
+      xpToNextLevel: 100,
+      wallet: 500,
+      rating: 5.0, // Initial rating
+      day: 1,
+      currentTime: 8 * 60, // 8:00 AM in minutes
+      customersServedToday: 0,
+      menuItems: [
+        {
+          id: "coffee-to-go",
+          name: "Coffee To Go",
+          price: 2.5,
+          stock: 20,
+          unlocked: true,
+          img: "../images/Coffee-To-Go.png",
+          prepTime: 5,
+          challenge: "sequence",
+        },
+        {
+          id: "croissant",
+          name: "Croissant",
+          price: 1.75,
+          stock: 15,
+          unlocked: false,
+          img: "../images/Croissant.png",
+          prepTime: 3,
+          challenge: "timing",
+        },
+        {
+          id: "coffee-cup",
+          name: "Espresso",
+          price: 3.0,
+          stock: 10,
+          unlocked: false,
+          img: "../images/Coffee-Cup.png",
+          prepTime: 7,
+          challenge: "sequence",
+        },
+        {
+          id: "sandwich",
+          name: "Sandwich",
+          price: 4.5,
+          stock: 5,
+          unlocked: false,
+          img: "../images/Sandwich.png",
+          prepTime: 10,
+          challenge: "sequence",
+        },
+        {
+          id: "chocolate-donut",
+          name: "Chocolate Donut",
+          price: 2.0,
+          stock: 10,
+          unlocked: false,
+          img: "../images/Chocolate-donut.png",
+          prepTime: 4,
+          challenge: "timing",
+        },
+        {
+          id: "frosted-blueberry-donut",
+          name: "Blueberry Donut",
+          price: 2.25,
+          stock: 10,
+          unlocked: false,
+          img: "../images/Frosted-blueberry-donut.png",
+          prepTime: 4,
+          challenge: "timing",
+        },
+        {
+          id: "chocolate-muffin",
+          name: "Chocolate Muffin",
+          price: 2.75,
+          stock: 8,
+          unlocked: false,
+          img: "../images/Chocolate-muffin.png",
+          prepTime: 6,
+          challenge: "sequence",
+        },
+      ],
+      upgrades: {
+        espressoMachine: 1, // Level 1
+        assistantHired: false,
+      },
+      dailyGoals: [
+        { description: "Serve 5 customers", target: 5, current: 0, type: "serve", completed: false },
+        { description: "Earn $50", target: 50, current: 0, type: "earn", completed: false },
+      ],
+      lastSaved: new Date().toISOString(),
+      gameVersion: "3.0.0",
     }
   }
 
-  // Function to validate JSON save data
   function validateSaveData(data) {
     return (
-      data &&
-      typeof data === "object" &&
-      data.playerName &&
-      typeof data.playerName === "string" &&
-      data.hasOwnProperty("playerScore")
+      data && data.playerName && data.shopName && data.playerStaff && data.menuItems && data.gameVersion === "3.0.0"
     )
   }
 
-  // Function to save data and download JSON file
-  function saveData() {
-    const playerName = playerNameInput.value.trim()
-    const playerScore = Number.parseInt(playerScoreInput.value, 10) || 0
-    const selectedStaff = Number.parseInt(staffSelection.value, 10) || 1
-
-    if (!playerName) {
-      displayData("Player Name cannot be empty.", "error")
-      return
+  function loadSaveDataToForm(data) {
+    if (!validateSaveData(data)) {
+      displayMessage(
+        "Invalid or outdated save data structure. Please start a new game or ensure the save is for version 3.0.0.",
+        "error",
+      )
+      localStorage.removeItem(SAVE_KEY) // Clear invalid save
+      return false
     }
+    playerNameInput.value = data.playerName
+    shopNameInput.value = data.shopName
 
-    const saveData = {
-      playerName: playerName,
-      playerScore: playerScore,
-      staffType: selectedStaff,
-      playerLevel: 1,
-      wallet: 500.0,
-      customersServed: 0,
-      rating: 5.0,
-      lastSaved: new Date().toISOString(),
-      gameType: "coffeeShop",
-      version: "1.0",
-    }
+    staffOptions.forEach((opt) => {
+      opt.classList.toggle("selected", opt.dataset.staffId === data.playerStaff.id)
+      if (opt.dataset.staffId === data.playerStaff.id) {
+        selectedStaffId = data.playerStaff.id
+        selectedStaffImg = data.playerStaff.img
+        staffSelectionIdInput.value = selectedStaffId
+        staffSelectionImgInput.value = selectedStaffImg
+      }
+    })
+    displayMessage("Save data loaded into form. Ready to start game or modify.", "success")
+    return true
+  }
 
-    try {
-      // Save to sessionStorage
-      sessionStorage.setItem(COFFEE_SHOP_SAVE_KEY, JSON.stringify(saveData))
-
-      // Generate filename and download JSON file
-      const filename = generateFileName(playerName)
-      downloadJSON(saveData, filename)
-
-      displayData(`Save successful! File "${filename}" downloaded and stored in session.`, "success")
-      updateStartGameButton()
-    } catch (e) {
-      displayData("Error saving data.", "error")
-      console.error("Error saving data:", e)
+  function startGameWithData(saveData) {
+    if (validateSaveData(saveData)) {
+      localStorage.setItem(SAVE_KEY, JSON.stringify(saveData))
+      window.location.href = "coffeeshopGame.html"
+    } else {
+      displayMessage("Cannot start game: Invalid save data. Please ensure it's for version 3.0.0.", "error")
     }
   }
 
-  // Function to load data from sessionStorage
-  function loadData() {
-    const loadedDataString = sessionStorage.getItem(COFFEE_SHOP_SAVE_KEY)
-    if (loadedDataString) {
+  newGameButton.addEventListener("click", () => {
+    const saveData = createDefaultSaveData()
+    if (!playerNameInput.value.trim()) {
+      displayMessage("Please enter a player name.", "error")
+      playerNameInput.focus()
+      return
+    }
+    if (!shopNameInput.value.trim()) {
+      displayMessage("Please enter a shop name.", "error")
+      shopNameInput.focus()
+      return
+    }
+    displayMessage(saveData, "json")
+    startGameWithData(saveData)
+  })
+
+  loadFromSessionButton.addEventListener("click", () => {
+    const dataString = localStorage.getItem(SAVE_KEY)
+    if (dataString) {
       try {
-        const loadedData = JSON.parse(loadedDataString)
-        displayData(loadedData, "json")
-        playerNameInput.value = loadedData.playerName || ""
-        playerScoreInput.value = loadedData.playerScore || ""
-
-        // Set staff selection
-        if (loadedData.staffType) {
-          const staffOptions = document.querySelectorAll(".staff-option")
-          staffOptions.forEach((opt) => opt.classList.remove("selected"))
-
-          const selectedStaff = document.querySelector(`[data-staff="${loadedData.staffType}"]`)
-          if (selectedStaff) {
-            selectedStaff.classList.add("selected")
-            staffSelection.value = loadedData.staffType
-          }
+        const saveData = JSON.parse(dataString)
+        if (loadSaveDataToForm(saveData)) {
+          startGameWithData(saveData)
         }
-
-        updateStartGameButton()
       } catch (e) {
-        displayData("Error parsing saved data from session.", "error")
-        console.error("Error parsing JSON from sessionStorage:", e)
+        displayMessage("Error parsing session data. Starting new game might be needed.", "error")
       }
     } else {
-      displayData("No save data found in this session.", "info")
+      displayMessage("No data in current session. Start a new game.", "info")
     }
-  }
+  })
 
-  // Function to clear data
-  function clearData() {
-    sessionStorage.removeItem(COFFEE_SHOP_SAVE_KEY)
-    displayData("Session save data cleared.", "success")
-    playerNameInput.value = ""
-    playerScoreInput.value = ""
-
-    // Reset staff selection to default
-    const staffOptions = document.querySelectorAll(".staff-option")
-    staffOptions.forEach((opt) => opt.classList.remove("selected"))
-    staffOptions[0].classList.add("selected")
-    staffSelection.value = "1"
-
-    updateStartGameButton()
-  }
-
-  // Function to start the game
-  function startGame() {
-    const playerName = playerNameInput.value.trim()
-    if (!playerName) {
-      displayData("Please enter a player name before starting the game.", "error")
-      return
+  downloadSaveButton.addEventListener("click", () => {
+    const dataString = localStorage.getItem(SAVE_KEY)
+    if (dataString) {
+      try {
+        const saveData = JSON.parse(dataString)
+        const filename = `coffeeshop_${saveData.playerName.replace(/\s+/g, "_")}_v3_${new Date().toISOString().slice(0, 10)}.json`
+        const blob = new Blob([dataString], { type: "application/json" })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = filename
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+        displayMessage(`Save file "${filename}" downloaded.`, "success")
+      } catch (e) {
+        displayMessage("Error preparing download. Save data might be corrupted.", "error")
+      }
+    } else {
+      displayMessage("No active session to download. Start or load a game first.", "info")
     }
+  })
 
-    // Ensure current data is saved to session before starting game
-    const playerScore = Number.parseInt(playerScoreInput.value, 10) || 0
-    const selectedStaff = Number.parseInt(staffSelection.value, 10) || 1
+  fileSelectButton.addEventListener("click", () => fileInput.click())
+  fileInput.addEventListener("change", (e) => {
+    if (e.target.files.length) handleFile(e.target.files[0])
+  })
 
-    const saveData = {
-      playerName: playerName,
-      playerScore: playerScore,
-      staffType: selectedStaff,
-      playerLevel: 1,
-      wallet: 500.0,
-      customersServed: 0,
-      rating: 5.0,
-      lastSaved: new Date().toISOString(),
-      gameType: "coffeeShop",
-      version: "1.0",
-    }
+  fileDropArea.addEventListener("dragover", (e) => {
+    e.preventDefault()
+    fileDropArea.classList.add("drag-over")
+  })
+  fileDropArea.addEventListener("dragleave", () => fileDropArea.classList.remove("drag-over"))
+  fileDropArea.addEventListener("drop", (e) => {
+    e.preventDefault()
+    fileDropArea.classList.remove("drag-over")
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0])
+  })
 
-    sessionStorage.setItem(COFFEE_SHOP_SAVE_KEY, JSON.stringify(saveData))
-
-    // Navigate to the coffee shop game
-    window.location.href = "coffeeshopGame.html"
-  }
-
-  // Function to handle file reading
   function handleFile(file) {
     if (file && file.type === "application/json") {
       const reader = new FileReader()
       reader.onload = (e) => {
         try {
           const saveData = JSON.parse(e.target.result)
-          if (validateSaveData(saveData)) {
-            loadSaveIntoForm(saveData)
-          } else {
-            displayData("Invalid save file format. Missing required fields.", "error")
+          if (loadSaveDataToForm(saveData)) {
+            startGameWithData(saveData)
           }
         } catch (error) {
-          displayData("Error reading JSON file. Please check the file format.", "error")
-          console.error("JSON parse error:", error)
+          displayMessage("Error reading or parsing JSON file.", "error")
         }
       }
       reader.readAsText(file)
     } else {
-      displayData("Please select a valid JSON file.", "error")
+      displayMessage("Please select a valid JSON file.", "error")
     }
   }
 
-  // Function to load from pasted JSON
-  function loadFromPaste() {
-    const pastedData = jsonPasteArea.value.trim()
-    if (!pastedData) {
-      displayData("Please paste JSON data first.", "error")
+  loadFromPasteButton.addEventListener("click", () => {
+    const pastedJSON = jsonPasteArea.value.trim()
+    if (!pastedJSON) {
+      displayMessage("Paste area is empty.", "info")
       return
     }
-
     try {
-      const saveData = JSON.parse(pastedData)
-      if (validateSaveData(saveData)) {
-        loadSaveIntoForm(saveData)
-        jsonPasteArea.value = ""
-      } else {
-        displayData("Invalid JSON format. Missing required fields (playerName, playerScore).", "error")
+      const saveData = JSON.parse(pastedJSON)
+      if (loadSaveDataToForm(saveData)) {
+        startGameWithData(saveData)
       }
     } catch (error) {
-      displayData("Invalid JSON format. Please check your pasted data.", "error")
-      console.error("JSON parse error:", error)
+      displayMessage("Invalid JSON format. Please check your pasted data.", "error")
+    }
+  })
+
+  clearSessionButton.addEventListener("click", () => {
+    localStorage.removeItem(SAVE_KEY)
+    playerNameInput.value = ""
+    shopNameInput.value = ""
+    staffOptions.forEach((opt) => opt.classList.remove("selected"))
+    staffOptions[0].classList.add("selected")
+    selectedStaffId = staffOptions[0].dataset.staffId
+    selectedStaffImg = staffOptions[0].dataset.staffImg
+    staffSelectionIdInput.value = selectedStaffId
+    staffSelectionImgInput.value = selectedStaffImg
+    displayMessage("Current session data cleared.", "success")
+  })
+
+  const existingDataString = localStorage.getItem(SAVE_KEY)
+  if (existingDataString) {
+    try {
+      const existingSaveData = JSON.parse(existingDataString)
+      if (validateSaveData(existingSaveData)) {
+        loadSaveDataToForm(existingSaveData)
+        displayMessage("Existing session data loaded. You can continue or start new.", "info")
+      } else {
+        localStorage.removeItem(SAVE_KEY) // Remove invalid or old version
+        displayMessage("Old or invalid save data cleared. Please start a new game.", "info")
+      }
+    } catch (e) {
+      localStorage.removeItem(SAVE_KEY) // Remove corrupted
+      displayMessage("Corrupted save data cleared. Please start a new game.", "error")
     }
   }
-
-  // Event Listeners
-  if (saveButton) {
-    saveButton.addEventListener("click", saveData)
-  }
-  if (loadButton) {
-    loadButton.addEventListener("click", loadData)
-  }
-  if (clearButton) {
-    clearButton.addEventListener("click", clearData)
-  }
-  if (startGameButton) {
-    startGameButton.addEventListener("click", startGame)
-  }
-
-  // Input change listeners
-  if (playerNameInput) {
-    playerNameInput.addEventListener("input", updateStartGameButton)
-  }
-  if (playerScoreInput) {
-    playerScoreInput.addEventListener("input", updateStartGameButton)
-  }
-
-  // File handling event listeners
-  if (fileSelectButton) {
-    fileSelectButton.addEventListener("click", () => fileInput.click())
-  }
-
-  if (fileInput) {
-    fileInput.addEventListener("change", (e) => {
-      if (e.target.files.length > 0) {
-        handleFile(e.target.files[0])
-      }
-    })
-  }
-
-  if (fileDropArea) {
-    fileDropArea.addEventListener("dragover", (e) => {
-      e.preventDefault()
-      fileDropArea.classList.add("drag-over")
-    })
-
-    fileDropArea.addEventListener("dragleave", (e) => {
-      e.preventDefault()
-      fileDropArea.classList.remove("drag-over")
-    })
-
-    fileDropArea.addEventListener("drop", (e) => {
-      e.preventDefault()
-      fileDropArea.classList.remove("drag-over")
-
-      if (e.dataTransfer.files.length > 0) {
-        handleFile(e.dataTransfer.files[0])
-      }
-    })
-
-    fileDropArea.addEventListener("click", () => fileInput.click())
-  }
-
-  if (loadFromPasteButton) {
-    loadFromPasteButton.addEventListener("click", loadFromPaste)
-  }
-
-  // Initialize
-  initStaffSelector()
-  displayData("Enter player details and save. Load to retrieve.", "info")
-  updateStartGameButton()
 })

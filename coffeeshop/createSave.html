@@ -3,96 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create/Load Session Save - Mini Game Thing!</title>
+    <title>Coffee Shop - Create/Load Game</title>
     <link rel="stylesheet" href="../styles/createSave.css">
 </head>
 <body>
     <div class="page-controls-standalone">
-        <a href="../index.html" class="back-button-global">&laquo; Back to Main Page</a>
+        <a href="coffeeShop.html" class="back-button-global">&laquo; Back to Welcome</a>
     </div>
 
     <div class="save-manager-container">
         <header class="content-header">
-            <h1>Manage Session Save</h1>
-            <p>Create saves, download JSON files, or load from existing save data.</p>
+            <h1>Set Up Your Coffee Shop</h1>
+            <p>Choose your barista, name your shop, and get ready to brew!</p>
         </header>
 
         <main class="save-form-area">
             <div class="form-layout">
                 <div class="input-section">
                     <div class="input-group">
-                        <label for="playerNameInput">Enter Player Name:</label>
-                        <input type="text" id="playerNameInput" placeholder="E.g., BaristaKing">
+                        <label for="playerNameInput">Your Name (Shop Owner):</label>
+                        <input type="text" id="playerNameInput" placeholder="E.g., Pat Barista">
                     </div>
                     <div class="input-group">
-                        <label for="playerScoreInput">Enter Current Score (Optional):</label>
-                        <input type="number" id="playerScoreInput" placeholder="E.g., 1000">
+                        <label for="shopNameInput">Your Shop's Name:</label>
+                        <input type="text" id="shopNameInput" placeholder="E.g., The Daily Grind">
                     </div>
                     <div class="input-group">
-                        <label for="staffSelection">Choose Your Staff:</label>
+                        <label>Choose Your Main Barista:</label>
                         <div class="staff-selector">
-                            <div class="staff-option" data-staff="1">
+                            <div class="staff-option selected" data-staff-id="barista" data-staff-img="../images/barista.png">
                                 <img src="../images/barista.png" alt="Barista">
-                                <span>Barista</span>
+                                <span>Classic Barista</span>
                             </div>
-                            <div class="staff-option" data-staff="2">
+                            <div class="staff-option" data-staff-id="broista" data-staff-img="../images/broista.png">
                                 <img src="../images/broista.png" alt="Broista">
-                                <span>Broista</span>
+                                <span>Cool Broista</span>
                             </div>
-                            <div class="staff-option" data-staff="3">
-                                <img src="../images/non-binary.png" alt="Non-Binary">
-                                <span>Non-Binary</span>
+                            <div class="staff-option" data-staff-id="non-binary" data-staff-img="../images/non-binary.png">
+                                <img src="../images/non-binary.png" alt="Non-Binary Barista">
+                                <span>Modern Barista</span>
                             </div>
                         </div>
-                        <input type="hidden" id="staffSelection" value="1">
+                        <input type="hidden" id="staffSelectionId" value="barista">
+                        <input type="hidden" id="staffSelectionImg" value="../images/barista.png">
                     </div>
                 </div>
 
                 <div class="button-section">
-                    <button id="saveButton" class="action-button save-button">Save & Download</button>
-                    <button id="loadButton" class="action-button load-button">Load from Session</button>
-                    <button id="clearButton" class="action-button clear-button">Clear Session</button>
-                    <button id="startGameButton" class="action-button start-game-button" disabled>Start Game</button>
+                    <button id="newGameButton" class="action-button new-game-button">Start New Shop & Play</button>
+                    <button id="loadFromSessionButton" class="action-button load-button">Load Last Session & Play</button>
                 </div>
-
-                <div id="saveDataDisplay" class="display-area">
-                    Enter player details and save. Load to retrieve.
+                 <div id="saveDataDisplay" class="display-area">
+                    Enter details to start a new shop or load a session.
                 </div>
             </div>
 
-            <!-- Load from File Section -->
             <div class="load-section">
-                <h3>Load from Save File</h3>
+                <h3>Advanced Save Management</h3>
                 <div class="load-options">
-                    <div class="file-upload-area" id="fileDropArea">
-                        <div class="upload-content">
-                            <p><strong>Drag & Drop JSON file here</strong></p>
-                            <p>or</p>
-                            <button id="fileSelectButton" class="file-select-button">Choose File</button>
-                            <input type="file" id="fileInput" accept=".json" style="display: none;">
+                    <div class="file-management">
+                        <h4>Download Current Session</h4>
+                        <button id="downloadSaveButton" class="action-button download-button">Download Save (JSON)</button>
+                        <h4>Load from File</h4>
+                        <div class="file-upload-area" id="fileDropArea">
+                            <div class="upload-content">
+                                <p><strong>Drag & Drop JSON save file here</strong></p>
+                                <p>or</p>
+                                <button id="fileSelectButton" class="file-select-button">Choose File</button>
+                                <input type="file" id="fileInput" accept=".json" style="display: none;">
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="paste-area">
-                        <label for="jsonPasteArea">Or paste JSON data:</label>
-                        <textarea id="jsonPasteArea" placeholder='Paste your JSON save data here, e.g.:
-{
-  "playerName": "BaristaKing",
-  "playerScore": 1500,
-  "gameType": "coffeeShop",
-  "staffType": 1
-}'></textarea>
-                        <button id="loadFromPasteButton" class="action-button load-button">Load from Paste</button>
+                    <div class="paste-management">
+                        <h4>Load from JSON Text</h4>
+                        <textarea id="jsonPasteArea" placeholder="Paste your JSON save data here..."></textarea>
+                        <button id="loadFromPasteButton" class="action-button load-button">Load from Paste & Play</button>
                     </div>
                 </div>
+                <button id="clearSessionButton" class="action-button clear-button">Clear Current Session Data</button>
             </div>
         </main>
-
-        <footer class="content-footer">
-            <p>Save data can be stored in browser session or downloaded as JSON files.</p>
-        </footer>
     </div>
-
     <script src="saves/saveManager.js"></script>
 </body>
 </html>

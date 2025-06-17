@@ -1,69 +1,95 @@
-project="game-landing-page"
-file="coffeeshop/coffeeShop.js"
-type="code"
-window.addEventListener('load', function() {
-    console.log('Coffee Shop page loaded. Setting up audio...');
+document.addEventListener("DOMContentLoaded", () => {
+  const muteButton = document.getElementById("muteButton")
+  let backgroundMusic = null
+  let isMuted = localStorage.getItem("coffeeShopMuted") === "true"
+  // Corrected music path
+  const musicPath = "../lib/coffeeShop/3_CoffeeBeans.wav"
 
-    const audioPath = '../lib/coffeeShop/3_CoffeeBeans.wav'; // Relative path
-    const audio = new Audio(audioPath);
-    audio.loop = true;
-    let isMuted = false; // Track mute state
-
-    const muteButton = document.getElementById('muteButton');
-    const startGameButton = document.getElementById('startGameButton');
-
-    function playAudioWithHandling() {
-        if (isMuted) {
-            console.log('Audio is muted, not playing.');
-            return;
-        }
-        console.log('Attempting to play audio...');
-        const playPromise = audio.play();
-
-        if (playPromise !== undefined) {
-            playPromise.then(_ => {
-                console.log('Audio playback started successfully.');
-            }).catch(error => {
-                console.error('Audio playback failed:', error);
-                if (startGameButton) {
-                    const playOnClick = () => {
-                        if (isMuted) return; // Don't play if muted by the time user clicks
-                        audio.play().then(() => {
-                            console.log('Audio playing after user interaction.');
-                        }).catch(err => {
-                            console.error('Still unable to play audio:', err);
-                        });
-                    };
-                    // Use { once: true } if you only want this to fire once for the initial play
-                    startGameButton.addEventListener('click', playOnClick);
-                    console.log('Audio will attempt to play when "Start Brewing!" is clicked if autoplay failed.');
-                }
-            });
-        }
+  function setupAudio() {
+    try {
+      backgroundMusic = new Audio(musicPath)
+      backgroundMusic.loop = true
+      backgroundMusic.volume = 0.1
+    } catch (e) {
+      console.error("Failed to initialize audio on welcome page:", e)
+      return
     }
 
-    // Delay playback by 2 seconds
-    setTimeout(playAudioWithHandling, 2000);
+    updateMuteButton()
+    if (!isMuted) {
+      playAudio()
+    }
+  }
 
-    // Mute button functionality
+  function playAudio() {
+    if (backgroundMusic && backgroundMusic.paused && audioContextAllowed()) {
+      backgroundMusic.play().catch((error) => {
+        console.log("Welcome page audio autoplay prevented:", error)
+        document.body.addEventListener("click", firstPlay, { once: true })
+        document.body.addEventListener("touchstart", firstPlay, { once: true })
+      })
+    }
+  }
+
+  let audioContextGlobal = null
+  function audioContextAllowed() {
+    if (audioContextGlobal && audioContextGlobal.state === "running") return true
+    return false
+  }
+
+  function initGlobalAudioContext() {
+    if (!audioContextGlobal) {
+      try {
+        audioContextGlobal = new (window.AudioContext || window.webkitAudioContext)()
+        if (audioContextGlobal.state === "suspended") {
+          audioContextGlobal.resume().then(() => {
+            console.log("Global AudioContext resumed!")
+            if (!isMuted && backgroundMusic) playAudio()
+          })
+        } else if (audioContextGlobal.state === "running") {
+          if (!isMuted && backgroundMusic) playAudio()
+        }
+      } catch (e) {
+        console.error("Could not create global AudioContext", e)
+      }
+    } else if (audioContextGlobal.state === "suspended") {
+      audioContextGlobal.resume().then(() => {
+        console.log("Global AudioContext resumed on interaction!")
+        if (!isMuted && backgroundMusic) playAudio()
+      })
+    }
+  }
+
+  function firstPlay() {
+    initGlobalAudioContext() // Ensure context is active
+    if (backgroundMusic && !isMuted && audioContextAllowed()) {
+      backgroundMusic.play().catch((e) => console.error("Error playing after interaction", e))
+    }
+  }
+
+  function updateMuteButton() {
     if (muteButton) {
-        muteButton.addEventListener('click', function() {
-            isMuted = !isMuted;
-            audio.muted = isMuted;
-            if (isMuted) {
-                muteButton.textContent = 'Unmute';
-                muteButton.classList.add('muted');
-                console.log('Audio Muted');
-            } else {
-                muteButton.textContent = 'Mute';
-                muteButton.classList.remove('muted');
-                console.log('Audio Unmuted');
-                // If audio was supposed to be playing but was muted, and now unmuted, try playing it.
-                // This handles unmuting if audio hasn't started due to autoplay policy + initial mute.
-                if (!audio.playing && audio.readyState >= 2) { // readyState 2 (HAVE_CURRENT_DATA) or higher
-                    playAudioWithHandling();
-                }
-            }
-        });
+      muteButton.textContent = isMuted ? "Unmute" : "Mute"
     }
-});
+  }
+
+  if (muteButton) {
+    muteButton.addEventListener("click", () => {
+      initGlobalAudioContext() // Ensure context is active before toggling
+      isMuted = !isMuted
+      localStorage.setItem("coffeeShopMuted", isMuted)
+      if (isMuted) {
+        backgroundMusic?.pause()
+      } else {
+        playAudio()
+      }
+      updateMuteButton()
+    })
+  }
+
+  // Try to set up audio. If context is needed, it will be created on first interaction.
+  setupAudio()
+  // Add interaction listeners to ensure AudioContext can start/resume.
+  document.body.addEventListener("click", initGlobalAudioContext, { once: true })
+  document.body.addEventListener("touchstart", initGlobalAudioContext, { once: true })
+})

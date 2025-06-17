@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee Shop - Mini Game Thing!</title>
-        <link rel="stylesheet" href="../styles/styles.css"> 
-    <link rel="stylesheet" href="../styles/coffeeShop.css"> 
-
+    <title>Coffee Shop - Welcome!</title>
+    <link rel="stylesheet" href="../styles/coffeeShop.css">
 </head>
 <body>
     <div class="page-controls">
-        <a href="../index.html" class="back-button-global">&laquo; Back to Games</a>
+        <a href="../index.html" class="back-button-global">&laquo; Back to Main Menu</a>
         <button id="muteButton" class="mute-button">Mute</button>
     </div>
 
@@ -21,9 +19,10 @@
 
         <main class="game-area">
             <div class="shop-visual">
-                <img src="../images/coffeeshop_interior.png" alt="Interior of a cozy coffee shop">
+                <!-- Using a generic placeholder for the welcome screen, game screen will use loading.png -->
+                <img src="../images/coffeeshop.png" alt="Friendly Coffee Shop Sign">
             </div>
-            <p>Get ready to brew some coffee and serve your customers!</p>
+            <p>Your coffee brewing adventure starts here. Manage your shop, serve customers, and become the best barista in town!</p>
             <button id="startGameButton" class="start-button" onclick="window.location.href='createSave.html'">Start Brewing!</button>
         </main>
 
@@ -31,6 +30,6 @@
             <p>&copy; Hans Gamlien. All rights reserved.</p>
         </footer>
     </div>
-    <script src="coffeeshop/coffeeShop.js"></script>
+    <script src="coffeeShop.js"></script>
 </body>
 </html>

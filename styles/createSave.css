@@ -1,25 +1,20 @@
+/* Same as your provided createSave.css - I'll copy it here for completeness */
 body {
   background-color: #f4eade;
   color: #4a3b31;
   font-family: "Georgia", serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   margin: 0;
   padding: 20px;
+  min-height: 100vh;
   box-sizing: border-box;
 }
 
 .page-controls-standalone {
   width: 100%;
   max-width: 800px;
+  margin: 0 auto 20px auto;
   display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-  padding: 0 10px;
-  box-sizing: border-box;
+  justify-content: flex-start;
 }
 
 .back-button-global {
@@ -40,384 +35,281 @@ body {
 }
 
 .save-manager-container {
+  max-width: 800px;
+  margin: 0 auto;
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  max-width: 800px;
-  width: 100%;
   overflow: hidden;
 }
 
 .content-header {
-  background-color: #343a40;
+  background-color: #6f4e37;
   color: white;
-  padding: 30px 40px;
+  padding: 30px;
   text-align: center;
 }
 
 .content-header h1 {
-  font-size: 2.5em;
-  color: #ffffff;
-  margin: 0 0 15px 0;
-  font-weight: bold;
+  margin: 0 0 10px 0;
+  font-size: 2.2em;
 }
 
 .content-header p {
-  font-size: 1em;
-  color: #adb5bd;
   margin: 0;
-  line-height: 1.6;
+  font-size: 1.1em;
+  opacity: 0.9;
 }
 
 .save-form-area {
-  padding: 40px;
-  background-color: #fff;
+  padding: 30px;
 }
 
 .form-layout {
   display: flex;
-  align-items: flex-start;
-  gap: 25px;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 20px; /* Reduced gap */
+  margin-bottom: 30px; /* Reduced margin */
 }
 
 .input-section {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  flex: 1;
-  min-width: 200px;
+  gap: 15px; /* Reduced gap */
 }
 
 .input-group {
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .input-group label {
-  display: block;
-  margin-bottom: 8px;
   font-weight: bold;
-  color: #4a5568;
-  font-size: 0.95em;
+  color: #6f4e37;
 }
 
 .input-group input[type="text"],
 .input-group input[type="number"] {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d4c0a1;
-  border-radius: 5px;
-  box-sizing: border-box;
-  font-size: 0.95em;
-  background-color: #fff;
+  padding: 12px;
+  border: 2px solid #d4c0a1;
+  border-radius: 6px;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
 }
 
-.input-group input[type="text"]:focus,
-.input-group input[type="number"]:focus {
+.input-group input:focus {
   outline: none;
-  border-color: #8c7851;
-  box-shadow: 0 0 0 2px rgba(140, 120, 81, 0.2);
+  border-color: #6f4e37;
 }
 
-/* Staff Selector Styles */
 .staff-selector {
   display: flex;
   gap: 15px;
-  margin-top: 10px;
+  justify-content: space-around; /* Changed for better spacing */
+  flex-wrap: wrap;
 }
 
 .staff-option {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px;
+  padding: 10px; /* Reduced padding */
   border: 2px solid #d4c0a1;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #fafafa;
-  flex: 1;
+  background-color: #f8f9fa;
+  width: 120px; /* Added fixed width */
 }
 
 .staff-option:hover {
-  border-color: #8c7851;
-  background-color: #f5f5f5;
+  border-color: #6f4e37;
+  transform: translateY(-2px);
 }
 
 .staff-option.selected {
   border-color: #6f4e37;
   background-color: #fff3cd;
-  box-shadow: 0 0 0 2px rgba(111, 78, 55, 0.2);
+  box-shadow: 0 0 10px rgba(111, 78, 55, 0.5);
 }
 
 .staff-option img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 50%;
+  width: 80px; /* Adjusted size */
+  height: 100px; /* Adjusted size */
+  object-fit: contain;
   margin-bottom: 8px;
 }
 
 .staff-option span {
-  font-size: 0.85em;
-  font-weight: 600;
-  color: #4a5568;
-}
-
-.staff-option.selected span {
+  font-weight: bold;
   color: #6f4e37;
+  font-size: 0.9em;
 }
 
 .button-section {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  min-width: 120px;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .action-button {
+  padding: 12px 24px;
   border: none;
-  padding: 8px 16px;
-  font-size: 0.9em;
-  font-weight: 600;
   border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
-  color: white;
-  width: 120px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.action-button:hover:not(:disabled) {
-  transform: translateY(-1px);
-}
-
-.action-button:active:not(:disabled) {
-  transform: translateY(0px);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.action-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.save-button {
-  background-color: #48bb78;
-}
-.save-button:hover:not(:disabled) {
-  background-color: #38a169;
-}
-
-.load-button {
-  background-color: #4299e1;
-}
-.load-button:hover:not(:disabled) {
-  background-color: #3182ce;
-}
-
-.clear-button {
-  background-color: #f56565;
-}
-.clear-button:hover:not(:disabled) {
-  background-color: #e53e3e;
-}
-
-.start-game-button {
-  background-color: #6f4e37;
-  margin-top: 8px;
+  font-size: 1em;
   font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-.start-game-button:hover:not(:disabled) {
-  background-color: #5a3f2b;
+.new-game-button {
+  background-color: #5cb85c;
+  color: white;
 }
-.start-game-button:disabled {
-  background-color: #a0a0a0;
+.new-game-button:hover {
+  background-color: #4cae4c;
+}
+.load-button {
+  background-color: #007bff;
+  color: white;
+}
+.load-button:hover {
+  background-color: #0056b3;
+}
+.download-button {
+  background-color: #f0ad4e;
+  color: white;
+}
+.download-button:hover {
+  background-color: #ec971f;
+}
+.clear-button {
+  background-color: #d9534f;
+  color: white;
+}
+.clear-button:hover {
+  background-color: #c9302c;
 }
 
 .display-area {
-  padding: 15px;
-  background-color: #f7fafc;
-  border: 1px solid #e2e8f0;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
   border-radius: 6px;
-  min-height: 60px;
-  text-align: left;
-  color: #4a5568;
-  line-height: 1.5;
-  word-wrap: break-word;
-  flex: 1;
-  min-width: 250px;
-  font-size: 0.95em;
-}
-
-.display-area .success {
-  color: #38a169;
-  font-weight: bold;
-}
-
-.display-area .error {
-  color: #e53e3e;
-  font-weight: bold;
-}
-
-.display-area pre {
+  padding: 15px; /* Reduced padding */
+  min-height: 60px; /* Reduced height */
+  font-family: monospace;
   white-space: pre-wrap;
-  word-wrap: break-word;
-  margin: 0;
-  font-family: "Courier New", monospace;
-  font-size: 0.85em;
+  overflow-x: auto;
+  font-size: 0.9em;
+  margin-top: 15px;
+}
+.display-area .success {
+  color: #28a745;
+  font-weight: bold;
+}
+.display-area .error {
+  color: #dc3545;
+  font-weight: bold;
+}
+.display-area .info {
+  color: #007bff;
 }
 
-/* Load Section Styles */
 .load-section {
-  border-top: 2px solid #e2e8f0;
-  padding-top: 30px;
+  border-top: 2px solid #d4c0a1;
+  padding-top: 20px; /* Reduced padding */
   margin-top: 20px;
 }
 
 .load-section h3 {
-  color: #4a5568;
-  margin-bottom: 20px;
-  font-size: 1.3em;
+  color: #6f4e37;
+  margin-bottom: 15px; /* Reduced margin */
+  text-align: center;
 }
 
 .load-options {
   display: flex;
-  gap: 25px;
+  gap: 20px; /* Reduced gap */
   flex-wrap: wrap;
+  justify-content: space-between;
+}
+.file-management,
+.paste-management {
+  flex: 1;
+  min-width: 250px; /* Ensure they don't get too small */
+  padding: 10px;
+  border: 1px solid #e0d1b0;
+  border-radius: 6px;
+}
+.file-management h4,
+.paste-management h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #5a3f2b;
 }
 
 .file-upload-area {
-  flex: 1;
-  min-width: 250px;
-  border: 2px dashed #cbd5e0;
+  border: 2px dashed #d4c0a1;
   border-radius: 8px;
-  padding: 30px 20px;
+  padding: 20px; /* Reduced padding */
   text-align: center;
-  background-color: #f7fafc;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
+  transition: border-color 0.3s ease;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
-.file-upload-area:hover {
-  border-color: #8c7851;
-  background-color: #fdfaf6;
-}
-
+.file-upload-area:hover,
 .file-upload-area.drag-over {
-  border-color: #48bb78;
-  background-color: #f0fff4;
+  border-color: #6f4e37;
+  background-color: #f8f9fa;
 }
-
 .upload-content p {
   margin: 5px 0;
-  color: #4a5568;
 }
 
 .file-select-button {
-  background-color: #4299e1;
+  background-color: #6f4e37;
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
+  padding: 8px 16px; /* Reduced padding */
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
   font-size: 0.9em;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
 }
 
 .file-select-button:hover {
-  background-color: #3182ce;
-}
-
-.paste-area {
-  flex: 1;
-  min-width: 250px;
-  text-align: left;
-}
-
-.paste-area label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #4a5568;
-  font-size: 0.95em;
+  background-color: #5a3f2b;
 }
 
 .paste-area textarea {
+  /* Applied to paste-management textarea */
   width: 100%;
-  height: 120px;
-  padding: 12px;
-  border: 1px solid #d4c0a1;
+  height: 100px; /* Reduced height */
+  padding: 10px; /* Reduced padding */
+  border: 2px solid #d4c0a1;
   border-radius: 6px;
-  box-sizing: border-box;
-  font-size: 0.85em;
-  font-family: "Courier New", monospace;
+  font-family: monospace;
+  font-size: 0.9em;
   resize: vertical;
-  background-color: #fff;
+  box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 .paste-area textarea:focus {
   outline: none;
-  border-color: #8c7851;
-  box-shadow: 0 0 0 2px rgba(140, 120, 81, 0.2);
+  border-color: #6f4e37;
 }
 
-.paste-area button {
-  margin-top: 10px;
-  width: auto;
-  min-width: 140px;
-}
-
-.content-footer {
-  background-color: #343a40;
-  color: #adb5bd;
-  padding: 20px 40px;
-  text-align: center;
-}
-
-.content-footer p {
-  font-size: 0.9em;
-  color: #adb5bd;
-  margin: 0;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
-  .form-layout,
+  .staff-selector {
+    justify-content: center; /* Center items on smaller screens */
+  }
+  .button-section {
+    flex-direction: column;
+  }
   .load-options {
     flex-direction: column;
-    gap: 20px;
-  }
-
-  .button-section {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .action-button {
-    width: auto;
-    min-width: 100px;
-  }
-
-  .staff-selector {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .staff-option {
-    flex-direction: row;
-    gap: 15px;
-  }
-
-  .staff-option img {
-    width: 50px;
-    height: 50px;
   }
 }
