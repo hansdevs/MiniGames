@@ -10,8 +10,11 @@
   <div class="page-controls">
       <a href="createSave.html" class="back-button-global">&laquo; Manage Save / Exit</a>
       <div class="game-time-info">
-          Day: <span id="gameDay">1</span> | Time: <span id="currentTimeDisplay">8:00 AM</span>
+          Day: <span id="gameDay">1</span> (<span id="dayOfWeek">Mon</span>) | Time: <span id="currentTimeDisplay">8:00 AM</span>
           <span id="shopStatusMessage" class="shop-status-message"></span>
+      </div>
+      <div class="time-progress-bar-container">
+          <div id="timeProgressFill" class="time-progress-fill"></div>
       </div>
       <div class="progress-container">
           <div class="level-counter">
@@ -42,68 +45,70 @@
               <div>Customers Served Today: <span id="customersServedDisplay">0</span></div>
           </div>
           <div class="sidebar-section">
+              <h3>Shop Schedule</h3>
+              <div id="scheduleControls" class="schedule-controls">
+                  <div class="day-toggle-buttons"></div>
+                  <div class="time-inputs">
+                      <label>Open: <input type="time" id="openTimeInput" step="3600"></label>
+                      <label>Close: <input type="time" id="closeTimeInput" step="3600"></label>
+                  </div>
+              </div>
+          </div>
+          <div class="sidebar-section">
               <h3>Daily Goals</h3>
-              <ul id="dailyGoalsList">
-                  <!-- Goals will be populated by JS -->
-              </ul>
+              <ul id="dailyGoalsList"></ul>
           </div>
           <div class="sidebar-section">
               <h3>Shop Controls</h3>
-              <button id="endDayButton" class="action-button end-day-button">End Day & See Report</button>
+              <button id="endDayButton" class="action-button end-day-button">End Day Manually</button>
           </div>
       </aside>
 
       <main class="main-game-area">
-          <div class="shop-view-background">
-              <!-- This div will have the loading.png as its background -->
-              <div id="playerStaff" class="character-sprite player-staff">
-                  <img id="playerStaffImage" src="../images/barista.png" alt="Player Barista">
-              </div>
-              <div id="assistantStaff" class="character-sprite assistant-staff" style="display: none;">
-                  <img id="assistantStaffImage" src="/placeholder.svg" alt="Assistant Barista">
-              </div>
-              <div id="customerQueueArea" class="customer-queue-visual">
-                  <!-- Visual representation of customers waiting -->
-              </div>
-              <div id="servicePoint" class="service-point-visual">
-                  <!-- Customer being served appears here -->
+          <div id="shopViewBackground" class="shop-view-background">
+              <div id="customerQueueArea" class="customer-queue-visual"></div>
+              <div id="servicePoint" class="service-point-visual"></div>
+              <div id="shopClosedOverlay" class="shop-closed-overlay" style="display: none;">
+                  <div class="closed-text">SHOP CLOSED</div>
               </div>
           </div>
           
           <div class="order-panel">
-              <div id="activeCustomerTicket" class="active-customer-ticket">
-                  <h3>Order Ticket</h3>
-                  <div id="ticketContent">No active order.</div>
+              <div id="activeCustomerTicket" class="active-customer-ticket" style="display: none;">
+                  <div class="ticket-header">ORDER TICKET</div>
+                  <div id="ticketContent" class="ticket-body"></div>
+                  <div class="ticket-footer">
+                      <button id="completeOrderButton" class="action-button fulfill-button" disabled>Complete Order</button>
+                  </div>
               </div>
-              <div id="preparationChallengeArea" class="preparation-challenge-area" style="display:none;">
-                  <h4>Quick Prep!</h4>
-                  <p id="challengeInstructions"></p>
-                  <div id="challengeInputs"></div>
-                  <button id="submitChallengeButton">Confirm Prep</button>
-                  <div id="challengeTimer"></div>
-              </div>
-              <div class="order-actions">
-                  <button id="fulfillOrderButton" class="action-button fulfill-button" disabled>Fulfill Order</button>
-                  <button id="cancelOrderButton" class="action-button cancel-button" disabled>Cancel Order</button>
+               <div id="assistantTicket" class="assistant-ticket" style="display: none;">
+                  <div class="ticket-header">ASSISTANT PROCESSING</div>
+                  <div id="assistantTicketContent" class="ticket-body"></div>
               </div>
           </div>
       </main>
 
       <aside class="right-sidebar">
           <div class="sidebar-section">
-              <h3>Available Menu</h3>
-              <div id="menuItemsContainer" class="menu-items-container">
-                  <!-- Menu items will be dynamically added here -->
-              </div>
+              <h3>Menu (Drag to Ticket)</h3>
+              <div id="menuItemsContainer" class="menu-items-container"></div>
           </div>
           <div class="sidebar-section">
               <h3>Shop Upgrades</h3>
               <button id="upgradeEspressoMachine" class="upgrade-button" data-cost="200">Espresso Machine Mk II ($200)</button>
               <button id="hireAssistantButton" class="upgrade-button" data-cost="500">Hire Assistant ($500)</button>
-              <!-- More upgrades can be added here -->
+              <button id="upgradeAssistantSpeed" class="upgrade-button" data-cost="300">Upgrade Assistant Speed ($300)</button>
           </div>
       </aside>
   </div>
+
+  <div id="dailyReportModal" class="modal" style="display:none;">
+      <div class="modal-content">
+          <span class="close-modal-button">&times;</span>
+          <div id="dailyReportContent"></div>
+      </div>
+  </div>
+
   <script src="coffeeShopGame.js"></script>
 </body>
 </html>

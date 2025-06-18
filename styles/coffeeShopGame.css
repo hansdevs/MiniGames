@@ -1,8 +1,7 @@
-/* Base body and page controls from previous version, with adjustments */
 body {
-  background-color: #e0d1b0; /* Lighter overall background */
+  background-color: #e0d1b0;
   color: #4a3b31;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* More modern font */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -15,7 +14,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #5a3f2b; /* Darker brown for top bar */
+  background-color: #5a3f2b;
   color: #f4eade;
   box-sizing: border-box;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -23,10 +22,23 @@ body {
   top: 0;
   z-index: 1000;
   font-size: 0.9em;
+  gap: 15px;
 }
 .game-time-info {
+  flex-shrink: 0;
+}
+.time-progress-bar-container {
   flex-grow: 1;
-  text-align: center;
+  height: 12px;
+  background-color: #4a3b31;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.time-progress-fill {
+  width: 0%;
+  height: 100%;
+  background-color: #ffd700;
+  transition: width 1s linear;
 }
 .shop-status-message {
   margin-left: 15px;
@@ -37,7 +49,6 @@ body {
 .back-button-global,
 .mute-button,
 .action-button {
-  /* General action button style */
   text-decoration: none;
   color: #f4eade;
   padding: 8px 16px;
@@ -113,7 +124,7 @@ body {
 
 .game-container {
   display: flex;
-  height: calc(100vh - 55px); /* Adjusted for page-controls height */
+  height: calc(100vh - 55px);
   gap: 10px;
   padding: 10px;
   box-sizing: border-box;
@@ -122,7 +133,7 @@ body {
 .left-sidebar,
 .right-sidebar {
   width: 260px;
-  background-color: #f4eade; /* Lighter sidebar background */
+  background-color: #f4eade;
   color: #4a3b31;
   padding: 15px;
   overflow-y: auto;
@@ -133,9 +144,8 @@ body {
   gap: 15px;
 }
 .sidebar-section {
-  margin-bottom: 0; /* Gap handled by flex container */
   padding: 12px;
-  background-color: #fffaf0; /* Creamy section background */
+  background-color: #fffaf0;
   border: 1px solid #e0d1b0;
   border-radius: 6px;
 }
@@ -149,7 +159,7 @@ body {
 .wallet-display {
   font-size: 1.25em;
   font-weight: bold;
-  color: #5cb85c; /* Green for money */
+  color: #5cb85c;
   background-color: #f0fff0;
   padding: 10px;
   border-radius: 6px;
@@ -181,11 +191,67 @@ body {
   color: #777;
 }
 
+.schedule-controls .day-toggle-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 2px;
+}
+.day-toggle-buttons button {
+  background-color: #d4c0a1;
+  border: 1px solid #8c7851;
+  color: #4a3b31;
+  border-radius: 4px;
+  padding: 6px 4px;
+  cursor: pointer;
+  width: 32px;
+  font-size: 0.8em;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+.day-toggle-buttons button:hover {
+  background-color: #c8b89c;
+  transform: translateY(-1px);
+}
+.day-toggle-buttons button.active {
+  background-color: #6f4e37;
+  color: #f4eade;
+  border-color: #5a3f2b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.schedule-controls .time-inputs {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  gap: 10px;
+}
+.time-inputs label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #6f4e37;
+  font-weight: bold;
+}
+.time-inputs input[type="time"] {
+  width: 90px;
+  border: 1px solid #d4c0a1;
+  border-radius: 4px;
+  padding: 4px;
+  background-color: #fffaf0;
+  color: #4a3b31;
+  margin-top: 4px;
+}
+.time-inputs input[type="time"]:focus {
+  outline: none;
+  border-color: #6f4e37;
+  box-shadow: 0 0 3px rgba(111, 78, 55, 0.3);
+}
+
 .main-game-area {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: #d4c0a1; /* Neutral background for game area */
+  background-color: #d4c0a1;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -194,147 +260,241 @@ body {
 .shop-view-background {
   flex-grow: 1;
   position: relative;
-  background-image: url("../images/loading.png"); /* THE GAME SCREEN IMAGE */
   background-size: cover;
   background-position: center;
   overflow: hidden;
+  transition: background-image 0.5s ease-in-out;
 }
 
-.character-sprite {
+.shop-closed-overlay {
   position: absolute;
-  /* bottom: 10%; */ /* General bottom, will be overridden by more specific rules */
-  height: 45%; /* Default height percentage */
-  max-height: 400px; /* Max pixel height */
-  z-index: 10; /* Default z-index */
-}
-.character-sprite img {
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  width: auto;
-  object-fit: contain;
-  display: block;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+.closed-text {
+  color: white;
+  font-size: 3em;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
-.player-staff {
-  /* Barista behind the counter */
-  /* ADJUST THESE VALUES FOR PRECISE PLACEMENT */
-  bottom: 56%; /* Higher: moves character up. Lower: moves down. */
-  left: 45%; /* Higher: moves right. Lower: moves left. */
-  transform: translateX(-50%);
-  height: 45%; /* Adjust size if needed */
-  max-height: 160px;
-  z-index: 9;
-}
-
-.assistant-staff {
-  /* Assistant also behind the counter */
-  /* ADJUST THESE VALUES FOR PRECISE PLACEMENT */
-  bottom: 46%;
-  left: 60%; /* Adjust to position next to main barista */
-  transform: translateX(-50%) scaleX(-1);
-  height: 45%;
-  max-height: 160px;
-  z-index: 9;
-}
-
-.customer-queue-visual {
-  /* Customers waiting in front of the counter */
+.customer-queue-visual,
+.service-point-visual {
   position: absolute;
-  /* ADJUST THESE VALUES FOR PRECISE PLACEMENT */
-  bottom: 35%; /* Higher: moves up. Lower: moves down. */
-  left: 15%; /* Higher: moves right. Lower: moves left. */
-  height: 26%;
-  max-height: 130px;
+  bottom: 5%;
+  height: 70.25%; 
+  max-height: 800px; 
+  z-index: 11;
+}
+.customer-queue-visual {
+  left: 15%;
   display: flex;
   align-items: flex-end;
-  gap: -20px;
-  z-index: 11;
+  gap: 10px; 
 }
-
 .service-point-visual {
-  /* Customer being served, in front of the counter */
-  position: absolute;
-  /* ADJUST THESE VALUES FOR PRECISE PLACEMENT */
-  bottom: 10%;
-  left: 40%; /* Adjust to be in front of the barista */
+  left: 40%;
   transform: translateX(-50%);
-  height: 26%;
-  max-height: 130px;
-  z-index: 11;
 }
 
 .customer-sprite {
-  /* Applies to customers in queue and at service point */
-  height: 125%; /* Fill the parent container (.customer-queue-visual or .service-point-visual) */
+  height: 100%;
   position: relative;
+  transition: opacity 0.3s ease;
 }
 .customer-sprite img {
-  height: 300%;
-  width: 300%;
+  height: 100%;
+  width: auto;
   object-fit: contain;
   display: block;
   cursor: pointer;
   transition: transform 0.2s;
 }
 .customer-sprite.waiting:first-child img:hover {
-  transform: scale(1.05); /* Subtle hover */
+  transform: scale(1.05);
+}
+.customer-sprite.assistant-processing-visual {
+  opacity: 0.7;
+  border: 2px dashed #ffc107;
+  border-radius: 5px;
+}
+
+/* Customer Impatience Indicators */
+.customer-sprite.impatient {
+  animation: shake 0.5s infinite;
+}
+.customer-sprite.very-impatient {
+  animation: shake 0.3s infinite;
+  filter: hue-rotate(0deg) saturate(1.5) brightness(1.2);
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
 }
 
 .order-panel {
   background-color: #fffaf0;
-  padding: 15px;
+  padding: 10px;
   border-top: 2px solid #6f4e37;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
   min-height: 180px;
+}
+
+.active-customer-ticket,
+.assistant-ticket {
+  background-color: #fffff0;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 8px;
+  font-family: "Courier New", Courier, monospace;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  width: 200px;
+  flex-shrink: 0;
 }
-.active-customer-ticket h3 {
-  margin-top: 0;
-  color: #4a3b31;
-  font-size: 1.2em;
+.active-customer-ticket.drag-over {
+  border-color: #5cb85c;
+  background-color: #f0fff0;
+}
+
+.ticket-header {
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px dashed #aaa;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+  font-size: 0.9em;
+  color: #333;
+}
+
+.ticket-body {
+  font-size: 0.85em;
+  line-height: 1.4;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 100px;
+}
+.ticket-body ul {
+  list-style-type: none;
+  padding-left: 5px;
+  margin: 0;
+}
+.ticket-body li.prepared {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.ticket-footer {
+  margin-top: auto;
+  padding-top: 5px;
   text-align: center;
 }
-#ticketContent {
-  background-color: #fefdfa;
-  padding: 10px;
-  border: 1px dashed #8c7851;
-  border-radius: 4px;
-  min-height: 60px;
-  margin-bottom: 10px;
-  font-size: 0.95em;
-  line-height: 1.5;
+.active-customer-ticket.long-wait {
+  border-left: 5px solid #ffc107;
 }
-#ticketContent ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 5px 0;
+.active-customer-ticket.critical-wait {
+  border-left: 5px solid #dc3545;
+  animation: pulse-red 1s infinite;
 }
-#ticketContent h5 {
-  margin: 8px 0 4px 0;
-  color: #5a3f2b;
+.assistant-ticket {
+  border-left: 5px solid #17a2b8;
+}
+
+@keyframes pulse-red {
+  0%,
+  100% {
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 2px 2px 15px rgba(220, 53, 69, 0.5);
+  }
+}
+
+/* Level Up Notification Styles */
+.level-up-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  color: #4a3b31;
+  padding: 20px 30px;
+  border-radius: 15px;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  animation: levelUpAppear 0.5s ease-out;
+  border: 3px solid #6f4e37;
+}
+
+.level-up-notification.fade-out {
+  animation: levelUpFadeOut 0.5s ease-in forwards;
+}
+
+@keyframes levelUpAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes levelUpFadeOut {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
 }
 
 .menu-items-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Responsive grid */
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 10px;
 }
 .menu-item-ingame {
   display: flex;
-  flex-direction: column; /* Stack image and details */
-  align-items: center; /* Center content */
+  flex-direction: column;
+  align-items: center;
   gap: 5px;
   background-color: #e0d1b0;
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #c8b89c;
-  cursor: pointer;
+  cursor: grab;
   transition: background-color 0.2s, box-shadow 0.2s;
   text-align: center;
 }
-.menu-item-ingame:hover:not(.locked) {
-  background-color: #c8b89c;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.menu-item-ingame:active {
+  cursor: grabbing;
 }
 .menu-item-ingame.locked {
   opacity: 0.5;
@@ -342,13 +502,14 @@ body {
   background-color: #e0e0e0;
 }
 .menu-item-ingame img {
-  width: 50px; /* Larger images */
+  width: 50px;
   height: 50px;
   object-fit: contain;
   border-radius: 4px;
   background-color: #fff;
   padding: 3px;
   border: 1px solid #d4c0a1;
+  pointer-events: none;
 }
 .menu-item-ingame .item-details {
   font-size: 0.8em;
@@ -382,6 +543,99 @@ body {
   cursor: not-allowed;
 }
 
+/* Daily Report Modal Styles */
+.modal {
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background-color: #fffaf0;
+  padding: 25px;
+  border: 3px solid #6f4e37;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  color: #4a3b31;
+}
+.close-modal-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+}
+.close-modal-button:hover,
+.close-modal-button:focus {
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modal-content h2 {
+  text-align: center;
+  color: #6f4e37;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #d4c0a1;
+  padding-bottom: 10px;
+}
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+.report-item {
+  background-color: #f4eade;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #d4c0a1;
+}
+.report-item h4 {
+  margin: 0 0 5px 0;
+  font-size: 0.9em;
+  color: #5a3f2b;
+}
+.report-item p {
+  margin: 0;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+#reportGoalsStatus {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 15px;
+}
+#reportGoalsStatus li {
+  background-color: #f4eade;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  border: 1px solid #d4c0a1;
+}
+#reportBonuses {
+  margin-top: 15px;
+  font-weight: bold;
+  color: #28a745;
+}
+#startNextDayButton {
+  display: block;
+  margin: 20px auto 0 auto;
+  padding: 12px 25px;
+}
+
 @media (max-width: 1200px) {
   .left-sidebar,
   .right-sidebar {
@@ -389,7 +643,6 @@ body {
   }
 }
 @media (max-width: 992px) {
-  /* Tablet breakpoint */
   .game-container {
     flex-direction: column;
     height: auto;
@@ -403,7 +656,7 @@ body {
   }
   .main-game-area {
     order: -1;
-    min-height: 400px; /* Ensure shop view has space */
+    min-height: 400px;
   }
   .shop-view-background {
     min-height: 300px;
@@ -418,21 +671,34 @@ body {
     justify-content: space-around;
     margin-top: 8px;
   }
+  .modal-content {
+    width: 90%;
+  }
 }
 @media (max-width: 768px) {
-  /* Mobile breakpoint */
-  .character-sprite {
-    height: 25%;
-    max-height: 120px;
-  } /* Smaller characters on mobile */
+  .customer-queue-visual,
+  .service-point-visual {
+    height: 35%; /* Adjusted for mobile */
+    max-height: 160px;
+  }
   .customer-queue-visual {
-    gap: -30px;
-  } /* Overlap more */
+    gap: 5px;
+  }
   .menu-items-container {
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
   .menu-item-ingame img {
     width: 40px;
     height: 40px;
+  }
+  .order-panel {
+    min-height: 140px;
+  }
+  .active-customer-ticket,
+  .assistant-ticket {
+    min-height: 60px;
+  }
+  .ticket-body {
+    max-height: 40px;
   }
 }

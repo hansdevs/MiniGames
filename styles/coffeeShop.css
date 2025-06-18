@@ -1,10 +1,10 @@
-/* Same as your provided coffeeShop.css - I'll copy it here for completeness */
+
 body {
-  background-color: #f4eade; /* A warm, coffee-like background */
-  color: #4a3b31; /* Dark brown text */
-  font-family: "Georgia", serif; /* A slightly more classic font */
+  background-color: #f4eade; 
+  color: #4a3b31; 
+  font-family: "Georgia", serif; 
   display: flex;
-  flex-direction: column; /* Allow stacking of controls and container */
+  flex-direction: column; 
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -15,12 +15,12 @@ body {
 
 .page-controls {
   width: 100%;
-  max-width: 700px; /* Match the coffee-shop-container max-width */
+  max-width: 700px; 
   display: flex;
-  justify-content: space-between; /* Puts back button left, mute button right */
+  justify-content: space-between; 
   align-items: center;
-  margin-bottom: 20px; /* Space between controls and the main box */
-  padding: 0 10px; /* Some padding if screen is exactly max-width */
+  margin-bottom: 20px; 
+  padding: 0 10px; 
   box-sizing: border-box;
 }
 

@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const muteButton = document.getElementById("muteButton")
   let backgroundMusic = null
   let isMuted = localStorage.getItem("coffeeShopMuted") === "true"
-  // Corrected music path
   const musicPath = "../lib/coffeeShop/3_CoffeeBeans.wav"
 
   function setupAudio() {
@@ -61,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function firstPlay() {
-    initGlobalAudioContext() // Ensure context is active
+    initGlobalAudioContext() 
     if (backgroundMusic && !isMuted && audioContextAllowed()) {
       backgroundMusic.play().catch((e) => console.error("Error playing after interaction", e))
     }
@@ -87,9 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
 
-  // Try to set up audio. If context is needed, it will be created on first interaction.
   setupAudio()
-  // Add interaction listeners to ensure AudioContext can start/resume.
   document.body.addEventListener("click", initGlobalAudioContext, { once: true })
   document.body.addEventListener("touchstart", initGlobalAudioContext, { once: true })
 })
